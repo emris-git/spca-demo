@@ -18,7 +18,8 @@ export function Photo({ photo, sizes, className = "object-cover", priority = fal
       alt={alt ?? meta.alt}
       fill
       sizes={sizes}
-      preload={priority}
+      loading={priority ? "eager" : "lazy"}
+      fetchPriority={priority ? "high" : "auto"}
       placeholder="blur"
       blurDataURL={meta.blur}
       className={className}

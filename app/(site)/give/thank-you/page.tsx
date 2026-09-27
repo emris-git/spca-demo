@@ -38,8 +38,11 @@ export default async function ThankYouPage({ searchParams }: PageProps<"/give/th
         <div className="relative -mt-16 p-5 sm:p-8">
           <p className="text-[13px] font-extrabold uppercase tracking-[0.14em] text-orange">Thank you</p>
           <h1 className="mt-2 animate-rise font-serif text-3xl font-bold leading-tight text-cream sm:text-4xl">
-            You just funded {exact ? impact.short : `something real — about ${impact.short}`}
-            {monthly ? ", every month" : ""}.
+            {monthly
+              ? `Your ${money(amount)} a month will ${impact.base} — every month.`
+              : exact
+                ? `Your ${money(amount)} just ${impact.past}.`
+                : `Your ${money(amount)} is already at work — ${amount > impact.amount ? "more than" : "close to"} what it takes to ${impact.base}.`}
           </h1>
           <p className="mt-3 text-mist">
             {money(amount)}
@@ -49,7 +52,7 @@ export default async function ThankYouPage({ searchParams }: PageProps<"/give/th
       </div>
 
       <div className="mt-6 space-y-6">
-        {!monthly ? <MonthlyUpsell amount={amount} outcome={impact.short} /> : null}
+        {!monthly ? <MonthlyUpsell amount={amount} impactAmount={impact.amount} impactPast={impact.past} /> : null}
 
         <AppealProgress
           name={campaign.appeal.name}

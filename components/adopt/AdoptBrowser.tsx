@@ -163,6 +163,7 @@ export function AdoptBrowser({ animals, initialQuery, hasLocation, centreId }: P
           {sort === "nearest" && hasLocation ? " · nearest first" : ""}
         </p>
 
+        <h2 className="sr-only">Results</h2>
         {results.length ? (
           <ul className="mt-3 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {results.map((a, i) => (

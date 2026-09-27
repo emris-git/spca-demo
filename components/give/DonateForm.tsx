@@ -173,10 +173,10 @@ export function DonateForm({ initialAmount, appeal }: { initialAmount: number | 
       {/* Payment — all simulated */}
       <div className="mt-5 space-y-2">
         <p className="font-extrabold text-navy">Pay in one tap</p>
-        <button type="button" disabled={!valid} onClick={() => setMethod("apple-pay")} className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-black font-bold text-white disabled:opacity-50">
+        <button type="button" disabled={!valid} onClick={() => setMethod("apple-pay")} aria-label="Apple Pay · demo" className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-black font-bold text-white disabled:opacity-50">
           <AppleMark /> Pay <span className="text-xs font-normal opacity-80">· demo</span>
         </button>
-        <button type="button" disabled={!valid} onClick={() => setMethod("google-pay")} className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full border-2 border-[#3c4043] bg-white font-bold text-[#3c4043] disabled:opacity-50">
+        <button type="button" disabled={!valid} onClick={() => setMethod("google-pay")} aria-label="Google Pay · demo" className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full border-2 border-[#3c4043] bg-white font-bold text-[#3c4043] disabled:opacity-50">
           <GoogleMark /> Pay <span className="text-xs font-normal opacity-80">· demo</span>
         </button>
         <button type="button" disabled={!valid} onClick={() => setMethod("card")} className={`${btn.secondary} w-full`}>
@@ -239,7 +239,7 @@ const capitalise = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 function AppleMark() {
   return (
-    <svg viewBox="0 0 17 20" className="h-5 w-4" fill="currentColor" aria-label="Apple" role="img">
+    <svg viewBox="0 0 17 20" className="h-5 w-4" fill="currentColor" aria-hidden>
       <path d="M14.1 10.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9C3.6 4.8 2 5.8 1.1 7.4c-1.8 3.2-.5 7.9 1.3 10.5.9 1.3 1.9 2.7 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.4.8c1.4 0 2.3-1.3 3.1-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.7-1-2.7-4.3zM11.6 3c.7-.9 1.2-2 1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.2.1 2.3-.6 3.1-1.5z" />
     </svg>
   );
@@ -247,7 +247,7 @@ function AppleMark() {
 
 function GoogleMark() {
   return (
-    <svg viewBox="0 0 24 24" className="size-5" aria-label="Google" role="img">
+    <svg viewBox="0 0 24 24" className="size-5" aria-hidden>
       <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.2-2.1 3.5-5.1 3.5-8.8z" />
       <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-2.9l-3.9-3c-1.1.7-2.5 1.2-4.1 1.2-3.1 0-5.8-2.1-6.7-5H1.3v3.1A12 12 0 0 0 12 24z" />
       <path fill="#FBBC05" d="M5.3 14.3a7.2 7.2 0 0 1 0-4.6V6.6h-4a12 12 0 0 0 0 10.8l4-3.1z" />

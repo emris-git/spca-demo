@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useId, useState, useTransition } from "react";
 import { saveLocation } from "@/lib/demo-client";
 import { Analytics } from "@/lib/services/analytics";
 import { LocationService } from "@/lib/services/location";
@@ -24,6 +24,7 @@ export function LocationPicker({
   const [pending, startTransition] = useTransition();
   const [status, setStatus] = useState<string | null>(null);
   const centres = LocationService.centres();
+  const selectId = useId();
 
   const apply = (centreId: string, lat: number, lng: number, source: "gps" | "manual") => {
     saveLocation({ centreId, lat, lng, source });
@@ -58,11 +59,11 @@ export function LocationPicker({
         Use my location
       </button>
       <div>
-        <label htmlFor="centre-picker" className={`mb-1 block text-sm font-bold ${dark ? "text-cream" : "text-navy"}`}>
+        <label htmlFor={selectId} className={`mb-1 block text-sm font-bold ${dark ? "text-cream" : "text-navy"}`}>
           Or choose a centre
         </label>
         <select
-          id="centre-picker"
+          id={selectId}
           value={currentId ?? ""}
           onChange={(e) => {
             const c = LocationService.getCentre(e.target.value);

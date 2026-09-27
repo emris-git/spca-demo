@@ -65,6 +65,7 @@ export function AppealProgress({ name, raised, goal, supporters, milestones, you
       <div
         className="relative mt-4 h-4 rounded-full bg-navy-2"
         role="progressbar"
+        aria-label={`${name}: amount raised`}
         aria-valuemin={0}
         aria-valuemax={goal}
         aria-valuenow={Math.round(total)}

@@ -7,8 +7,9 @@ import { Analytics } from "@/lib/services/analytics";
 import { SupporterService } from "@/lib/services/supporter";
 import { btn } from "@/lib/ui";
 
-export function MonthlyUpsell({ amount, outcome }: { amount: number; outcome: string }) {
+export function MonthlyUpsell({ amount, impactAmount, impactPast }: { amount: number; impactAmount: number; impactPast: string }) {
   const suggested = Math.max(10, Math.round(amount / 3 / 5) * 5);
+  const times = Math.floor((suggested * 12) / impactAmount);
   const [state, setState] = useState<"ask" | "yes" | "no">("ask");
   if (state === "no") return null;
   return (
@@ -25,8 +26,9 @@ export function MonthlyUpsell({ amount, outcome }: { amount: number; outcome: st
         <>
           <p id="monthly" className="font-serif text-xl font-bold">Keep the good going?</p>
           <p className="mt-1">
-            {money(suggested)} a month adds up to {money(suggested * 12)} a year — that&apos;s like your gift today{" "}
-            ({outcome}), again and again. Change or stop anytime.
+            {money(suggested)} a month adds up to {money(suggested * 12)} a year
+            {times >= 2 ? ` — enough to do what today's gift did (${impactPast.replace(/^helped /, "help ")}) ${times} times over` : ""}. Monthly
+            gifts let centres plan ahead. Change or stop anytime.
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
             <button

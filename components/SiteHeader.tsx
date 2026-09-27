@@ -16,8 +16,9 @@ export function SiteHeader({ centreId, centreShort }: { centreId: string | null;
   return (
     <header className="border-b border-line bg-cream">
       <div className={`${container} flex h-16 items-center gap-3`}>
-        <Link href="/" className="-ml-1 rounded-lg px-1 py-2" aria-label="SPCA concept demo — home">
+        <Link href="/" className="-ml-1 rounded-lg px-1 py-2">
           <Wordmark />
+          <span className="sr-only"> demo — home</span>
         </Link>
         <nav aria-label="Main" className="ml-6 hidden lg:block">
           <ul className="flex gap-1">

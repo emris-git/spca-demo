@@ -6,6 +6,7 @@ import { Icon } from "@/components/Icon";
 import { Photo } from "@/components/Photo";
 import { TrackView } from "@/components/TrackView";
 import { getDemoState } from "@/lib/demo-server";
+import { money } from "@/lib/format";
 import { EventsService } from "@/lib/services/events";
 import { container, eyebrow } from "@/lib/ui";
 
@@ -17,31 +18,42 @@ export default async function GivePage({ searchParams }: PageProps<"/give">) {
   const campaign = EventsService.campaign(demo.now);
   const progress = EventsService.appealProgress(demo.now, campaign, demo.given);
   const requested = Number(params.amount);
+  const pct = Math.min(100, Math.round((progress.raised / progress.goal) * 100));
   const initialAmount = Number.isFinite(requested) && requested > 0 ? Math.min(Math.floor(requested), 100_000) : null;
 
   return (
     <div className={`${container} pt-8`}>
       <TrackView name="view_donate" props={{ appeal: campaign.id }} />
-      <div className="grid gap-8 lg:grid-cols-[1fr_440px]">
-        <div>
+      <div className="grid gap-6 lg:grid-cols-[1fr_440px] lg:gap-x-8">
+        <div className="lg:col-start-1 lg:row-start-1">
           <p className={eyebrow}>{campaign.appeal.name}</p>
           <h1 className="mt-1 font-serif text-3xl font-bold sm:text-4xl">See exactly what your gift does</h1>
           <p className="mt-2 text-lg">{campaign.appeal.pitch}</p>
-          <div className="mt-6">
-            <AppealProgress
-              name={campaign.appeal.name}
-              raised={progress.raised}
-              goal={progress.goal}
-              supporters={progress.supporters}
-              milestones={campaign.appeal.milestones}
-            />
-          </div>
+          {/* Slim goal on phones, so the form stays near the top; full card follows the form. */}
+          <a href="#appeal" className="mt-4 block rounded-2xl bg-navy p-3 text-cream lg:hidden">
+            <span className="flex justify-between text-sm font-bold">
+              <span>{money(progress.raised)} raised</span>
+              <span className="text-mist">{pct}% of {money(progress.goal)}</span>
+            </span>
+            <span className="mt-2 block h-2 rounded-full bg-navy-2" aria-hidden>
+              <span className="block h-full rounded-full bg-orange" style={{ width: `${pct}%` }} />
+            </span>
+          </a>
+        </div>
+        <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:pt-2">
+          <DonateForm initialAmount={initialAmount} appeal={campaign.appeal.name} />
+        </div>
+        <div id="appeal" className="scroll-mt-16 lg:col-start-1 lg:row-start-2">
+          <AppealProgress
+            name={campaign.appeal.name}
+            raised={progress.raised}
+            goal={progress.goal}
+            supporters={progress.supporters}
+            milestones={campaign.appeal.milestones}
+          />
           <div className="relative mt-6 hidden aspect-[16/9] overflow-hidden rounded-3xl lg:block">
             <Photo photo="hero-bed" sizes="(min-width: 1024px) 600px, 1px" />
           </div>
-        </div>
-        <div className="lg:pt-2">
-          <DonateForm initialAmount={initialAmount} appeal={campaign.appeal.name} />
         </div>
       </div>
 
