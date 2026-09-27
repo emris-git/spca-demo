@@ -27,6 +27,10 @@
   --animate-rise: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   --animate-pop: pop 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
   --animate-shimmer: shimmer 1.2s linear infinite;
+
+  /* Strong curves for UI motion (Tailwind's built-in ease-out is too weak). */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 @keyframes rise {
@@ -37,6 +41,32 @@
   0% { opacity: 0; transform: scale(0.85); }
   100% { opacity: 1; transform: none; }
 }
+/* Live campaign goal (components/give/AppealProgress.tsx) */
+@keyframes goal-flash {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes goal-bump {
+  0% { transform: translate(50%, -50%) scale(1); }
+  30% { transform: translate(50%, -50%) scale(1.45); }
+  100% { transform: translate(50%, -50%) scale(1); }
+}
+@keyframes goal-chip {
+  0% { opacity: 0; transform: translateY(6px); }
+  12% { opacity: 1; transform: translateY(0); }
+  75% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-4px); }
+}
+@keyframes goal-chip-fade {
+  0%, 100% { opacity: 0; }
+  12%, 75% { opacity: 1; }
+}
+@keyframes ticker-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes shimmer {
   from { background-position: -200% 0; }
   to { background-position: 200% 0; }
@@ -93,6 +123,22 @@ details > summary::-webkit-details-marker {
   display: none;
 }
 
+}
+
+.goal-fill {
+  transition: clip-path 700ms var(--ease-out);
+}
+.goal-flash { animation: goal-flash 1200ms var(--ease-out) both; }
+.goal-head { transform: translate(50%, -50%); }
+.goal-head.is-bumping { animation: goal-bump 600ms var(--ease-out); }
+.goal-chip { animation: goal-chip 2200ms var(--ease-out) both; }
+.ticker-in { animation: ticker-in 280ms var(--ease-out) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* Updates stay visible without movement: fades only, no translate or scale. */
+  .goal-flash { animation: goal-flash 1200ms linear both !important; }
+  .goal-chip { animation: goal-chip-fade 2200ms linear both !important; }
+  .goal-head.is-bumping { animation: none !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {
