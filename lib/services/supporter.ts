@@ -12,7 +12,8 @@ export type SupporterRequest =
   | { kind: "volunteer-interest"; role: string }
   | { kind: "foster-interest" }
   | { kind: "monthly-upgrade"; amount: number }
-  | { kind: "adoption-application"; animalId: string };
+  | { kind: "adoption-application"; animalId: string }
+  | { kind: "post-gift-details"; postalUpdates: boolean; heardFrom: string };
 
 export const SupporterService = {
   async submit(request: SupporterRequest): Promise<{ reference: string }> {

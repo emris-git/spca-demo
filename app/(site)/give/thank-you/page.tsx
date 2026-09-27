@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AppealProgress } from "@/components/give/AppealProgress";
+import { AfterGiftDetails } from "@/components/give/AfterGiftDetails";
 import { MonthlyUpsell } from "@/components/give/MonthlyUpsell";
 import { Icon } from "@/components/Icon";
 import { Photo } from "@/components/Photo";
@@ -63,6 +64,8 @@ export default async function ThankYouPage({ searchParams }: PageProps<"/give/th
           yourGift={amount}
           live={false}
         />
+
+        <AfterGiftDetails />
 
         <section aria-labelledby="next" className="rounded-3xl border border-line bg-paper p-5">
           <p className={eyebrow}>What happens next</p>

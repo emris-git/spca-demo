@@ -184,7 +184,8 @@ export function DonateForm({ initialAmount, appeal }: { initialAmount: number | 
         </button>
         <p className="flex items-start gap-2 pt-1 text-xs text-muted">
           <Icon name="lock" className="size-4 shrink-0" />
-          Demo only: no payment is taken and you&apos;ll never be asked for card details.
+          Just your name and email for the receipt — no address or phone. Demo only: no payment is taken and
+          you&apos;ll never be asked for card details.
         </p>
       </div>
 
@@ -204,36 +205,79 @@ export function DonateForm({ initialAmount, appeal }: { initialAmount: number | 
           </p>
           <p className="mt-1 text-sm">{capitalise(impact.outcome)}{monthly ? ", every month" : ""}.</p>
         </div>
-        {method === "card" ? (
-          <p className="mt-4 rounded-2xl border-2 border-dashed border-line p-4 text-sm">
-            On the live site, the payment gateway&apos;s secure card field would appear here, so card numbers never touch
-            SPCA&apos;s servers. <strong>This demo never asks for card details.</strong>
-          </p>
-        ) : (
-          <p className="mt-4 text-sm">
-            On a real phone this opens the {method ? METHOD_LABEL[method] : ""} sheet with your saved card, name and email — no
-            form to fill in. Here we&apos;ll simulate it.
-          </p>
-        )}
-        <button
-          type="button"
-          onClick={pay}
-          disabled={processing}
-          className={`mt-5 w-full ${method === "apple-pay" ? "inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-black font-bold text-white" : btn.primary}`}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            pay();
+          }}
         >
-          {processing ? (
-            <>
-              <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" aria-hidden />
-              Processing…
-            </>
+          {method === "card" ? (
+            <fieldset className="mt-4">
+              <legend className="font-extrabold text-navy">Your details for the tax receipt</legend>
+              <p className="mt-1 text-sm text-muted">
+                That&apos;s all we need: the receipt only needs your name, and we email it to you. No address or phone
+                before you give.
+              </p>
+              <div className="mt-3 grid grid-cols-2 gap-3">
+                <div>
+                  <label htmlFor={`${customId}-first`} className="text-sm font-bold text-navy">First name</label>
+                  <input id={`${customId}-first`} required defaultValue="Alex" autoComplete="off" className={field} />
+                </div>
+                <div>
+                  <label htmlFor={`${customId}-last`} className="text-sm font-bold text-navy">Last name</label>
+                  <input id={`${customId}-last`} required defaultValue="Taylor" autoComplete="off" className={field} />
+                </div>
+              </div>
+              <div className="mt-3">
+                <label htmlFor={`${customId}-email`} className="text-sm font-bold text-navy">Email for your receipt</label>
+                <input id={`${customId}-email`} type="email" required defaultValue="alex@example.com" autoComplete="off" className={field} />
+              </div>
+              {monthly ? (
+                <div className="mt-3">
+                  <label htmlFor={`${customId}-phone`} className="text-sm font-bold text-navy">
+                    Phone <span className="font-normal text-muted">(optional)</span>
+                  </label>
+                  <input id={`${customId}-phone`} type="tel" autoComplete="off" className={field} aria-describedby={`${customId}-phone-why`} />
+                  <p id={`${customId}-phone-why`} className="mt-1 text-xs text-muted">Only used if a monthly payment fails, so your gift doesn&apos;t quietly stop.</p>
+                </div>
+              ) : null}
+              <label className="mt-3 flex items-start gap-2 text-sm">
+                <input type="checkbox" className="mt-1 size-4 accent-blue" />
+                Send me stories about the animals I help (optional)
+              </label>
+              <p className="mt-1 text-xs text-muted">Sample details, pre-filled. Nothing leaves your browser.</p>
+              <p className="mt-4 rounded-2xl border-2 border-dashed border-line p-4 text-sm">
+                On the live site, the payment gateway&apos;s secure card field would appear here, so card numbers never touch
+                SPCA&apos;s servers. <strong>This demo never asks for card details.</strong>
+              </p>
+            </fieldset>
           ) : (
-            `Confirm ${money(amount)}${monthly ? " monthly" : ""} (simulated)`
+            <p className="mt-4 text-sm">
+              On a real phone this opens the {method ? METHOD_LABEL[method] : ""} sheet. Your name and email for the tax
+              receipt come from the wallet, so there&apos;s no form to fill in. Here we&apos;ll simulate it.
+            </p>
           )}
-        </button>
+          <button
+            type="submit"
+            disabled={processing}
+            className={`mt-5 w-full ${method === "apple-pay" ? "inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-black font-bold text-white" : btn.primary}`}
+          >
+            {processing ? (
+              <>
+                <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" aria-hidden />
+                Processing…
+              </>
+            ) : (
+              `Confirm ${money(amount)}${monthly ? " monthly" : ""} (simulated)`
+            )}
+          </button>
+        </form>
       </Sheet>
     </div>
   );
 }
+
+const field = "mt-1 min-h-12 w-full rounded-xl border-2 border-line bg-white px-3 text-[16px] text-navy";
 
 const capitalise = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
