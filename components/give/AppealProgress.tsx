@@ -86,27 +86,25 @@ export function AppealProgress({ name, raised, goal, supporters, milestones, you
   return (
     <section aria-label={`${name} progress`} className="rounded-3xl bg-navy p-5 text-cream on-dark sm:p-6">
       {live ? (
-        <p className="mb-2 flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.14em] text-orange">
+        <p className="mb-2 flex h-6 items-center gap-2 text-xs font-extrabold uppercase tracking-[0.14em] text-orange">
           <span className="relative flex size-2.5" aria-hidden>
             <span key={lastGift?.id ?? 0} className={`absolute inset-0 rounded-full bg-orange ${lastGift ? "goal-flash" : "opacity-0"}`} style={{ boxShadow: "0 0 0 6px rgb(242 165 83 / 0.35)" }} />
             <span className="relative size-2.5 rounded-full bg-orange" />
           </span>
           {paused ? "Updates paused" : "Live"}
-        </p>
-      ) : null}
-      <div className="flex items-baseline justify-between gap-3">
-        <p className="relative font-serif text-3xl font-bold tabular-nums text-cream">
-          {money(shownTotal)}
           {lastGift ? (
             <span
               key={lastGift.id}
               aria-hidden
-              className="goal-chip absolute left-full top-0 ml-2 whitespace-nowrap rounded-full bg-orange px-2 py-0.5 font-sans text-sm font-extrabold text-navy"
+              className="goal-chip rounded-full bg-orange px-2 py-0.5 text-[13px] tracking-normal text-navy"
             >
               +{money(lastGift.amount)}
             </span>
           ) : null}
         </p>
+      ) : null}
+      <div className="flex items-baseline justify-between gap-3">
+        <p className="font-serif text-3xl font-bold tabular-nums text-cream">{money(shownTotal)}</p>
         <p className="text-right text-sm text-mist">
           of {money(goal)} goal
           <br />
